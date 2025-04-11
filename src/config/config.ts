@@ -3,6 +3,7 @@ type ConfigurationType = {
   MONGODB_URL: string;
   SALT_ROUD: string | number;
   HASH_PASSWORD: string;
+  JWT_TOKEN: string;
 };
 
 import dotenv from "dotenv";
@@ -14,4 +15,5 @@ export const configuration: ConfigurationType = {
   MONGODB_URL: process.env.MONGODB_URL ?? "",
   SALT_ROUD: process.env.SALT_ROUD ?? 9,
   HASH_PASSWORD: process.env.HASH_PASSWORD ?? "",
+  JWT_TOKEN: process.env.JWT_TOKEN ?? "",
 };

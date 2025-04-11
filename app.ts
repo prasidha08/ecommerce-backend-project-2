@@ -1,5 +1,6 @@
 import express, { NextFunction, request, Request, Response } from "express";
 import AuthRouter from "./src/routers/auth.routes";
+import AuthCategory from "./src/routers/category.routes";
 
 const app = express();
 
@@ -8,6 +9,8 @@ const app = express();
 app.use(express.json());
 
 app.use(AuthRouter);
+
+app.use(AuthCategory);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({

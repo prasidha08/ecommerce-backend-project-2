@@ -5,7 +5,7 @@ export const RegisterZodSchema = z
     firstName: z.string(),
     lastName: z.string(),
     email: z.string().email(),
-    password: z.string().length(6),
+    password: z.string(),
     phoneNumber: z.string().optional(),
   })
   .strict();
@@ -13,7 +13,7 @@ export const RegisterZodSchema = z
 export const LoginZodSchema = z
   .object({
     email: z.string().email(),
-    password: z.string().length(6),
+    password: z.string(),
   })
   .strict();
 
