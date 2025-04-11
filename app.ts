@@ -20,8 +20,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({
-    message: err.message ?? "Some thing went wrong. ",
+  res.status(err.statusCode ?? 500).json({
+    message: err.message ?? "Some thing went wrong.",
     success: false,
   });
 });

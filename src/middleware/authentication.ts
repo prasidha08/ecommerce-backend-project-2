@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../utility/auth.utility";
+import { ErrorHandler } from "../utility/errorHandler";
 
 export const authentication = (
   req: Request,
@@ -9,13 +10,13 @@ export const authentication = (
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    throw new Error("Unauthorized user"); // unauthorized user 401
+    throw new ErrorHandler("Unauthorized user", 401); // unauthorized user 401
   }
 
   const isUserLoggedIn = verifyToken(token);
 
   if (!isUserLoggedIn) {
-    throw new Error("Token is expired"); // 403 forbidden
+    throw new ErrorHandler("Token is expired", 403); // 403 forbidden
   }
 
   if (!req.body) {

@@ -6,6 +6,7 @@ import {
   jwtToken,
 } from "../utility/auth.utility";
 import { LoginZodType } from "../types/auth";
+import { ErrorHandler } from "../utility/errorHandler";
 const register = async (req: Request, res: Response, next: NextFunction) => {
   // first time db user
   //1. db already
@@ -48,9 +49,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
         password: encryptedPassword,
       });
     } else {
-      throw new Error("Already registered");
+      throw new ErrorHandler("User is already registered", 400);
     }
-    res.json({
+    res.status(201).json({
       message: "Registered",
       success: true,
     });
@@ -70,7 +71,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!user || user.length === 0) {
-      throw new Error("Either password or email didn't match");
+      throw new ErrorHandler("Either password or email didn't match", 400);
     }
 
     // user
@@ -80,7 +81,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     );
 
     if (!isPasswordValidate) {
-      throw new Error("Either password or email didn't match");
+      throw new ErrorHandler("Either password or email didn't match", 400);
     }
 
     const { email: userEmail, _id, role } = user[0];
@@ -93,7 +94,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
     });
 
-    res.json({
+    res.status(200).json({
       message: "User is logged in.",
       success: true,
       data: {
