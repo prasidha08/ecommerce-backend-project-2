@@ -65,6 +65,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
   const { email, password } = requestedByClient;
 
+  console.log(email, password, "this is email and password..");
+
   try {
     const user = await UserModel.find({
       email,
@@ -87,7 +89,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const { email: userEmail, _id, role } = user[0];
     // client token
 
-    const { password: _passwordToRemove, ...remainigDate } = user[0];
+    const { password: _passwordToRemove, ...remainigDate } = user[0].toObject();
 
     const token = jwtToken({
       payload: { email: userEmail ?? "", _id, role: role! },

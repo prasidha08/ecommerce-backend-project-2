@@ -1,10 +1,17 @@
 import express, { NextFunction, request, Request, Response } from "express";
 import AuthRouter from "./src/routers/auth.routes";
 import AuthCategory from "./src/routers/category.routes";
+import cors from "cors";
 
 const app = express();
 
-// router ...
+app.use(
+  cors({
+    // Allow all origins (not recommended for production)
+    origin: "*",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
