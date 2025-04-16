@@ -14,6 +14,7 @@ export const authentication = (
   }
 
   const isUserLoggedIn = verifyToken(token);
+  console.log("🚀 ~ isUserLoggedIn:", isUserLoggedIn);
 
   if (!isUserLoggedIn) {
     throw new ErrorHandler("Token is expired", 403); // 403 forbidden

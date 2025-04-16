@@ -1,11 +1,13 @@
 import app from "../app";
 import { configuration } from "./config/config";
 import { mongodbConnection } from "./db/server";
+import { createLogin } from "./seed/admin.seed";
 
 mongodbConnection()
   .then(() => {
     app.listen(configuration.PORT, () => {
       console.log("Server is listening on ", configuration.PORT);
+      createLogin();
     });
   })
   .catch((e) => {
