@@ -33,7 +33,6 @@ router.get(
 );
 
 // customer app
-
-router.get("/api/category", getAllCategoriesByPublic); // public access
+router.get("/api/categories", getAllCategoriesByPublic); // public access
 
 export = router;

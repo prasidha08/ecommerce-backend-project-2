@@ -3,6 +3,26 @@ import { CategoryZodType } from "../types/category";
 import { CategoryModel } from "../model/category.model";
 import { ErrorHandler } from "../utility/errorHandler";
 
+type ParamType = {
+  page: number;
+  pageLimit: number;
+  search?: string;
+};
+
+// aggregate pipeline
+
+function fetchCategories({ page, pageLimit, search }: ParamType) {
+  let query = {};
+
+  if (search) {
+    query = { name: search };
+  }
+
+  return CategoryModel.find({
+    ...query,
+  }).limit(pageLimit);
+}
+
 const createCategory = async (
   req: Request,
   res: Response,
@@ -41,10 +61,18 @@ const getAllCategoriesByPublic = async (
   next: NextFunction
 ) => {
   try {
+    const { limit = 10, page = 0, search } = req.query as unknown as any; //
+
+    const categories = await fetchCategories({
+      pageLimit: Number(limit),
+      page: Number(page),
+      search,
+    });
+
     res.status(201).json({
       message: "Fetched category successfully.",
       success: true,
-      data: [],
+      data: categories,
     });
   } catch (error) {
     next(error); // skip // error middle >> response
@@ -58,10 +86,18 @@ const getAllCategoriesByAdmin = async (
 ) => {
   try {
     // fetch
+    const { limit = 10, page = 0, search } = req.query as unknown as any; //
+
+    const categories = await fetchCategories({
+      pageLimit: Number(limit),
+      page: Number(page),
+      search,
+    });
+
     res.status(201).json({
       message: "Fetched category successfully.",
       success: true,
-      data: [],
+      data: categories,
     });
   } catch (error) {
     next(error); // skip // error middle >> response
