@@ -4,14 +4,14 @@ import { CategoryModel } from "../model/category.model";
 import { ErrorHandler } from "../utility/errorHandler";
 
 type ParamType = {
-  page: number;
+  skipCalculation: number;
   pageLimit: number;
   search?: string;
 };
 
 // aggregate pipeline
 
-function fetchCategories({ page, pageLimit, search }: ParamType) {
+function fetchCategories({ skipCalculation, pageLimit, search }: ParamType) {
   let query = {};
 
   if (search) {
@@ -20,7 +20,9 @@ function fetchCategories({ page, pageLimit, search }: ParamType) {
 
   return CategoryModel.find({
     ...query,
-  }).limit(pageLimit);
+  })
+    .limit(pageLimit)
+    .skip(skipCalculation);
 }
 
 const createCategory = async (
@@ -61,18 +63,44 @@ const getAllCategoriesByPublic = async (
   next: NextFunction
 ) => {
   try {
-    const { limit = 10, page = 0, search } = req.query as unknown as any; //
+    const { limit = 10, page = 1, search } = req.query as unknown as any; //
 
-    const categories = await fetchCategories({
-      pageLimit: Number(limit),
-      page: Number(page),
-      search,
-    });
+    const pageLimit = Number(limit);
+    const pageNumber = Number(page);
+
+    // 10 , page 1 ==> 0 ==> 1 to 10 // fetched
+    //  page 2 ===> 11 to 20
+    //page 3 ==> 21 to 30
+
+    // 98 , 10
+    // 98/10 , 9.... ,
+
+    const skipCalculation = (pageNumber - 1) * limit;
+
+    const [categories, totalCategories] = await Promise.all([
+      fetchCategories({
+        pageLimit,
+        skipCalculation,
+        search,
+      }),
+      CategoryModel.find().countDocuments(),
+    ]);
+
+    const totalPage = Math.ceil(totalCategories / limit);
 
     res.status(201).json({
       message: "Fetched category successfully.",
       success: true,
-      data: categories,
+      data: {
+        data: categories,
+        pagination: {
+          limit: pageLimit,
+          page: pageNumber,
+          firsPage: pageNumber === 1,
+          lastPage: totalPage === pageNumber,
+          totalPage: totalPage,
+        },
+      },
     });
   } catch (error) {
     next(error); // skip // error middle >> response
@@ -85,19 +113,37 @@ const getAllCategoriesByAdmin = async (
   next: NextFunction
 ) => {
   try {
-    // fetch
-    const { limit = 10, page = 0, search } = req.query as unknown as any; //
+    const { limit = 10, page = 1, search } = req.query as unknown as any; //
 
-    const categories = await fetchCategories({
-      pageLimit: Number(limit),
-      page: Number(page),
-      search,
-    });
+    const pageLimit = Number(limit);
+    const pageNumber = Number(page);
+
+    const skipCalculation = (pageNumber - 1) * limit;
+
+    const [categories, totalCategories] = await Promise.all([
+      fetchCategories({
+        pageLimit,
+        skipCalculation,
+        search,
+      }),
+      CategoryModel.find().countDocuments(),
+    ]);
+
+    const totalPage = Math.ceil(totalCategories / limit);
 
     res.status(201).json({
       message: "Fetched category successfully.",
       success: true,
-      data: categories,
+      data: {
+        data: categories,
+        pagination: {
+          limit: pageLimit,
+          page: pageNumber,
+          firsPage: pageNumber === 1,
+          lastPage: totalPage === pageNumber,
+          totalPage: totalPage,
+        },
+      },
     });
   } catch (error) {
     next(error); // skip // error middle >> response
