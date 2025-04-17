@@ -77,14 +77,31 @@ const getAllCategoriesByPublic = async (
 
     const skipCalculation = (pageNumber - 1) * limit;
 
-    const [categories, totalCategories] = await Promise.all([
-      fetchCategories({
-        pageLimit,
-        skipCalculation,
-        search,
-      }),
-      CategoryModel.find().countDocuments(),
+    // const [categories, totalCategories] = await Promise.all([
+    //   fetchCategories({
+    //     pageLimit,
+    //     skipCalculation,
+    //     search,
+    //   }),
+    //   CategoryModel.find().countDocuments(),
+    // ]);
+
+    const aggregatedData = await CategoryModel.aggregate([
+      { $match: search ? { name: search } : {} },
+      {
+        $facet: {
+          data: [
+            { $sort: { createdAt: -1 } },
+            { $skip: skipCalculation },
+            { $limit: pageLimit },
+          ], // one pipeline
+          totalCount: [{ $count: "count" }], // second pipeline
+        },
+      },
     ]);
+
+    const categories = aggregatedData[0].data;
+    const totalCategories = aggregatedData[0].totalCount[0].count;
 
     const totalPage = Math.ceil(totalCategories / limit);
 
