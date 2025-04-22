@@ -1,4 +1,4 @@
-import express, { NextFunction, request, Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import AuthRouter from "./src/routers/auth.routes";
 import AuthCategory from "./src/routers/category.routes";
 import cors from "cors";
@@ -15,11 +15,18 @@ app.use(
 
 app.use(express.json());
 
+app.use("/check", (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({
+    message: "Api is already to go",
+    success: true,
+  });
+});
+
 app.use(AuthRouter);
 
 app.use(AuthCategory);
 
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((_req: Request, res: Response, _next: NextFunction) => {
   res.status(404).json({
     message: "Route not found.",
     success: false,
