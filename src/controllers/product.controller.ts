@@ -94,11 +94,27 @@ const getAllProductsByPublic = async (
     const aggregatedData = await ProductModel.aggregate([
       { $match: search ? { name: search } : {} },
       {
+        $lookup: {
+          as: "reviewDetails",
+          from: "reviews",
+          localField: "_id",
+          foreignField: "productId",
+        },
+      },
+      {
+        $addFields: {
+          rating: {
+            $avg: "$reviewDetails.rating",
+          },
+        },
+      },
+      {
         $project: {
           _id: 1,
           title: 1,
           price: 1,
           discountPercentage: 1,
+          rating: 1,
         },
       },
       {
