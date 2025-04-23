@@ -93,7 +93,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const token = jwtToken({
       payload: { email: userEmail ?? "", _id, role: role! },
-      expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
+      // expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
+      expiresIn: 60 * 60,
     });
 
     res.status(200).json({

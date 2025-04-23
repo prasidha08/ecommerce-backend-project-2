@@ -14,6 +14,7 @@ export const authentication = (
   }
 
   const isUserLoggedIn = verifyToken(token);
+
   console.log("🚀 ~ isUserLoggedIn:", isUserLoggedIn);
 
   if (!isUserLoggedIn) {
@@ -24,8 +25,5 @@ export const authentication = (
     req.body = {};
   }
   req.body.user = isUserLoggedIn;
-
-  console.log("hello");
-
   return next();
 };
