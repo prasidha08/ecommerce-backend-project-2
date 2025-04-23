@@ -2,6 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import AuthRouter from "./src/routers/auth.routes";
 import AuthCategory from "./src/routers/category.routes";
 import ProductRouter from "./src/routers/product.routes";
+import ReviewRouter from "./src/routers/reviews.routes";
+
 import cors from "cors";
 
 const app = express();
@@ -28,6 +30,8 @@ app.use(AuthRouter);
 app.use(AuthCategory);
 
 app.use(ProductRouter);
+
+app.use(ReviewRouter);
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   res.status(404).json({

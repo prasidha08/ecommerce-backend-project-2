@@ -89,7 +89,7 @@ const productSchema = new Schema(
         depth: { type: Number },
       },
     ],
-    reviews: [{ type: mongoose.Types.ObjectId, ref: "Reviews" }],
+    // reviews: [{ type: mongoose.Types.ObjectId, ref: "Reviews" }],
     thumbnail: { type: String, require: true },
     images: [{ type: String }],
     returnPolicy: { type: String, default: null },
