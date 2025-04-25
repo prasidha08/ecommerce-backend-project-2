@@ -10,9 +10,16 @@ import { ROLE } from "../model/user.model";
 import { validateData } from "../utility/validator";
 import controllers from "../controllers/order.controller";
 import { CartZodSchema } from "../types/cart";
-import { OrderZodSchema } from "../types/order";
+import { OrderZodSchema, UpdateStatusZodSchema } from "../types/order";
 
-const { cancelCartByCustomer, createOrder } = controllers;
+const {
+  cancelOrderByCustomer,
+  createOrder,
+  getOrdersByAdmin,
+  getOrdersByCustomer,
+  getOrdersCount,
+  updateOrderByAdmin,
+} = controllers;
 
 const router = express.Router();
 
@@ -32,7 +39,8 @@ router.put(
   "/api/admin/orders/:orderId",
   authentication,
   authorization([ROLE.ORDERADMIN, ROLE.SUPERADMIN]),
-  validateData(CartZodSchema)
+  validateData(UpdateStatusZodSchema),
+  updateOrderByAdmin
   //   updateCart
 );
 
@@ -40,18 +48,30 @@ router.put(
   "/api/orders/:orderId",
   authentication,
   authorization([ROLE.CUSTOMER]),
-  validateData(CartZodSchema)
-  //   updateCart
+  validateData(CartZodSchema),
+  cancelOrderByCustomer
 );
 
-router.get("/api/orders", authentication, authorization([ROLE.CUSTOMER]));
+router.get(
+  "/api/orders",
+  authentication,
+  authorization([ROLE.CUSTOMER]),
+  getOrdersByCustomer
+);
 
 router.get(
   "/api/admin/orders",
   authentication,
-  authorization([ROLE.SUPERADMIN, ROLE.ORDERADMIN])
+  authorization([ROLE.SUPERADMIN, ROLE.ORDERADMIN]),
+  getOrdersByAdmin
 );
 
+router.get(
+  "/api/admin/order-counts",
+  authentication,
+  authorization([ROLE.SUPERADMIN, ROLE.ORDERADMIN]),
+  getOrdersCount
+);
 export = router;
 
 // order , customer , self order

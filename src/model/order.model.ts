@@ -36,6 +36,7 @@ import { cartProductSchema } from "./cart.model";
 const orderSchema = new Schema({
   total: { type: Number, require: true },
   discountedTotal: { type: Number, default: null },
+  orderReadableId: { type: String, required: true },
   userId: { type: mongoose.Types.ObjectId, ref: "Users", required: true },
   cartId: { type: mongoose.Types.ObjectId, ref: "Carts", required: true },
   totalProducts: { type: Number },

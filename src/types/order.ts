@@ -23,4 +23,12 @@ export const OrderZodSchema = z.object({
   products: z.array(CartProductZodSchema),
 });
 
+export const UpdateStatusZodSchema = z
+  .object({
+    status: z.nativeEnum(ORDER_STATUS),
+  })
+  .strict();
+
+export type UpdateStatusZodType = z.infer<typeof UpdateStatusZodSchema>;
+
 export type OrderZodType = z.infer<typeof OrderZodSchema>;
