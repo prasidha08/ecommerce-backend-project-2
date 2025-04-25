@@ -22,16 +22,16 @@
 
 import mongoose, { model, Schema, Types } from "mongoose";
 
-const cartProductSchema = new Schema(
+export const cartProductSchema = new Schema(
   {
-    id: { type: Types.ObjectId, require: true },
-    title: { type: String, require: true },
-    price: { type: Number, require: true },
-    quantity: { type: Number, require: true },
-    total: { type: Number, require: true },
+    _id: { type: Types.ObjectId, required: true },
+    title: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+    total: { type: Number, required: true },
     discountPercentage: { type: Number, default: null },
     discountedTotal: { type: Number, default: null },
-    thumbnail: { type: String, require: true },
+    thumbnail: { type: String, required: true },
   },
   {
     _id: false,
@@ -39,9 +39,9 @@ const cartProductSchema = new Schema(
 );
 
 const cartSchema = new Schema({
-  total: { type: Number, require: true },
+  total: { type: Number, required: true },
   discountedTotal: { type: Number, default: null },
-  userId: { type: mongoose.Types.ObjectId, ref: "Users" },
+  userId: { type: mongoose.Types.ObjectId, ref: "Users", required: true },
   totalProducts: { type: Number },
   totalQuantity: { type: Number },
   products: [cartProductSchema],
