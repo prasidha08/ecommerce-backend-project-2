@@ -71,9 +71,11 @@ const deleteCart = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getCart = async (req: Request, res: Response, next: NextFunction) => {
-  // fetch cart order nabaneko
   try {
     const user = req.body.user;
+    //
+
+    // collection order join // we need a cart whose orderId has not been made/created.
 
     const result = await CartModel.aggregate([
       {
@@ -83,10 +85,10 @@ const getCart = async (req: Request, res: Response, next: NextFunction) => {
       },
       {
         $lookup: {
-          as: "orderDetails",
-          from: "orders",
-          localField: "_id",
-          foreignField: "cartId",
+          as: "orderDetails", // Name of the collection to join
+          from: "orders", // Name of the new array field to add with matched documents
+          localField: "_id", // Field from the input documents
+          foreignField: "cartId", // Field from the documents of the "from"    collection
         },
       },
       {
