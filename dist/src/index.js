@@ -16,5 +16,5 @@ const admin_seed_1 = require("./seed/admin.seed");
 })
     .catch((e) => {
     console.log("🚀 ~ e:", e);
-    console.log("🚀 ~ Error while connecting to the database:");
+    console.log("🚀 ~ Error while connecting to the database:", config_1.configuration.MONGODB_URL);
 });

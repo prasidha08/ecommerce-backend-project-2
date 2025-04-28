@@ -12,5 +12,5 @@ mongodbConnection()
   })
   .catch((e) => {
     console.log("🚀 ~ e:", e);
-    console.log("🚀 ~ Error while connecting to the database:");
+    console.log("🚀 ~ Error while connecting to the database:",configuration.MONGODB_URL);
   });
