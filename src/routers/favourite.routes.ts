@@ -4,7 +4,7 @@ import { authorization } from "../middleware/authorization";
 import { ROLE } from "../model/user.model";
 import { validateData } from "../utility/validator";
 import { FavouriteZodSchema } from "../types/favourite";
-// import controllers from "../controllers/favourite.controller";
+import controllers from "../controllers/favourite.controller";
 
 const { deleteFavourite, getFavouriteLists, createFavourite } = controllers;
 
