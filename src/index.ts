@@ -5,6 +5,8 @@ import { createLogin } from "./seed/admin.seed";
 
 mongodbConnection()
   .then(() => {
+    console.log("Database is connected");
+    
     app.listen(configuration.PORT, () => {
       console.log("Server is listening on ", configuration.PORT);
       createLogin();
