@@ -9,6 +9,7 @@ const server_1 = require("./db/server");
 const admin_seed_1 = require("./seed/admin.seed");
 (0, server_1.mongodbConnection)()
     .then(() => {
+    console.log("Database is connected");
     app_1.default.listen(config_1.configuration.PORT, () => {
         console.log("Server is listening on ", config_1.configuration.PORT);
         (0, admin_seed_1.createLogin)();
