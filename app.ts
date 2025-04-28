@@ -5,6 +5,7 @@ import ProductRouter from "./src/routers/product.routes";
 import ReviewRouter from "./src/routers/reviews.routes";
 import CartRouter from "./src/routers/cart.routes";
 import OrderRouter from "./src/routers/order.routes";
+import FavRouter from "./src/routers/favourite.routes";
 
 import cors from "cors";
 
@@ -38,6 +39,8 @@ app.use(ReviewRouter);
 app.use(CartRouter);
 
 app.use(OrderRouter);
+
+app.use(FavRouter);
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   res.status(404).json({
