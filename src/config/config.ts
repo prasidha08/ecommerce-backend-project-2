@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 dotenv.configDotenv();
 
 export const configuration: ConfigurationType = {
-  PORT: process.env.PORT ?? 8080,
+  PORT: process.env.PORT ?? 8081,
   MONGODB_URL: process.env.MONGODB_URL ?? "",
   SALT_ROUD: process.env.SALT_ROUD ?? 9,
   HASH_PASSWORD: process.env.HASH_PASSWORD ?? "",
