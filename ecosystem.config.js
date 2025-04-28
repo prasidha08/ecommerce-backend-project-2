@@ -1,7 +1,7 @@
 module.exports = {
     apps : [{
       name   : "ecommerce-app",
-      script : "dist/index.js",
+      script : "dist/src/index.js",
       args: 'start:prod'
     }],
     env_production: {
