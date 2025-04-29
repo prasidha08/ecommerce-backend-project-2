@@ -30,7 +30,7 @@ const users = new Schema(
         country: { type: String, default: null },
         landmark: { type: String, default: null },
         area: { type: String, default: null },
-        id: { type: String, default: null },
+        _id: { type: String, default: null },
       },
     ],
   },

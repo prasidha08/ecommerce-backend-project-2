@@ -68,23 +68,7 @@ const getAllCategoriesByPublic = async (
     const pageLimit = Number(limit);
     const pageNumber = Number(page);
 
-    // 10 , page 1 ==> 0 ==> 1 to 10 // fetched
-    //  page 2 ===> 11 to 20
-    //page 3 ==> 21 to 30
-
-    // 98 , 10
-    // 98/10 , 9.... ,
-
     const skipCalculation = (pageNumber - 1) * limit;
-
-    // const [categories, totalCategories] = await Promise.all([
-    //   fetchCategories({
-    //     pageLimit,
-    //     skipCalculation,
-    //     search,
-    //   }),
-    //   CategoryModel.find().countDocuments(),
-    // ]);
 
     const aggregatedData = await CategoryModel.aggregate([
       { $match: search ? { name: search } : {} },
